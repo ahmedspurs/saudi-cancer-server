@@ -18,7 +18,6 @@ const publicRoutes = [
   { url: "/api/service-work/search", method: "GET" },
   { url: "/api/cases/by-type", method: "POST" },
   { url: "/api/partners/paginate", method: "POST" },
-  { url: "/api/service-services/paginate", method: "POST" },
   { url: "/api/service-work/paginate", method: "POST" },
   { url: "/api/users/login", method: "POST" },
   { url: "/api/services/:id", method: "GET" },
