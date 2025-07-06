@@ -1,5 +1,6 @@
 /node_modules
 /temp
+/templates
 /temp-output
 compress.js
 .env
