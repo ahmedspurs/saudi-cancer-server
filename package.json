@@ -1,0 +1,40 @@
+{
+  "name": "confe-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "dev": "nodemon server",
+    "start": "node server.js",
+    "sequelize": "sequelize-auto -h localhost -d saudi_cancer -u root -x -p 3306 -o models"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-easy-fileuploader": "^1.0.2",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^2.3.3",
+    "nodemailer": "^7.0.3",
+    "nodemon": "^2.0.22",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-linkedin-oauth2": "^2.0.0",
+    "passport-linkedin-oauth2-v2": "^3.1.0",
+    "passport-twitter": "^1.0.4",
+    "request": "^2.88.2",
+    "sanitize-html": "^2.17.0",
+    "sequelize": "^6.21.3",
+    "sequelize-auto": "^0.8.8",
+    "stripe": "^18.2.1",
+    "winston": "^3.17.0"
+  }
+}

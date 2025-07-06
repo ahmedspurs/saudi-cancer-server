@@ -1,0 +1,97 @@
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T10:35:49.342Z"}
+{"email":"ahmeddeveloper.contact@gmail.com","level":"info","message":"Created user","timestamp":"2025-06-07T10:35:50.010Z","userId":48}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:35:52.063Z","userId":48}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T10:35:52.065Z","userId":48}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T10:37:17.003Z"}
+{"email":"amnnn80@gmail.com","level":"info","message":"Created user","timestamp":"2025-06-07T10:37:17.541Z","userId":49}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:37:25.624Z","userId":49}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T10:37:25.625Z","userId":49}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T10:43:58.081Z"}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T10:44:19.478Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:44:19.501Z","userId":49}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T10:44:19.504Z","userId":49}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T10:48:14.149Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:48:14.155Z","userId":49}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T10:48:14.157Z","userId":49}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T10:53:07.016Z"}
+{"email":"ahmeddeveloper.contact@gmail.com","level":"info","message":"Created user","timestamp":"2025-06-07T10:53:07.748Z","userId":50}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:53:09.745Z","userId":50}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T10:53:09.747Z","userId":50}
+{"level":"warn","message":"User not found during deserialization","timestamp":"2025-06-07T10:54:29.674Z","userId":50}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T10:54:37.408Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:54:37.414Z","userId":49}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T10:54:37.415Z","userId":49}
+{"level":"warn","message":"User not found during deserialization","timestamp":"2025-06-07T10:57:07.304Z","userId":49}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T10:57:42.201Z"}
+{"email":"amnnn80@gmail.com","level":"info","message":"Created user","timestamp":"2025-06-07T10:57:42.745Z","userId":51}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T10:57:44.472Z","userId":51}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T10:57:44.473Z","userId":51}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T11:43:09.038Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T11:43:12.045Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T11:44:03.420Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T11:45:24.305Z"}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T11:45:47.466Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T11:45:47.491Z","userId":51}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T11:45:47.493Z","userId":51}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T11:51:51.369Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T11:51:51.378Z","userId":51}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T11:51:51.380Z","userId":51}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T11:52:40.723Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T11:52:40.727Z","userId":51}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T11:52:40.728Z","userId":51}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T11:55:14.861Z"}
+{"email":"ahmeddeveloper.contact@gmail.com","level":"info","message":"Created user","timestamp":"2025-06-07T11:55:15.766Z","userId":52}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T11:55:47.896Z","userId":52}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T11:55:47.897Z","userId":52}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T12:19:16.589Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T12:19:16.603Z","userId":52}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T12:19:16.605Z","userId":52}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T13:05:34.533Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T13:05:34.545Z","userId":52}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T13:05:34.548Z","userId":52}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T13:07:26.555Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T13:07:26.558Z","userId":51}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T13:07:26.560Z","userId":51}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T13:08:33.155Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T13:08:33.158Z","userId":52}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T13:08:33.162Z","userId":52}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:10:36.023Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:10:36.153Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:10:40.401Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:10:43.573Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:06.514Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:07.738Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:17.083Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:19.981Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:22.185Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:22.497Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:26.673Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:26.881Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:35.963Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:35.990Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:40.301Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:22:40.678Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:28:06.837Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:28:07.011Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:28:13.017Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-07T13:28:13.591Z"}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T13:29:23.553Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T13:29:23.574Z","userId":52}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T13:29:23.577Z","userId":52}
+{"level":"info","message":"Processing Google OAuth","profileId":"112078373088959724380","timestamp":"2025-06-07T14:45:01.301Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T14:45:01.343Z","userId":51}
+{"level":"info","message":"Google callback: User authenticated","timestamp":"2025-06-07T14:45:01.347Z","userId":51}
+{"level":"info","message":"Processing Twitter OAuth","profileId":"1825873028556734465","timestamp":"2025-06-07T14:51:39.282Z"}
+{"level":"info","message":"Serializing user","timestamp":"2025-06-07T14:51:39.289Z","userId":52}
+{"level":"info","message":"Twitter callback: User authenticated","timestamp":"2025-06-07T14:51:39.292Z","userId":52}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-15T08:18:27.479Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-15T08:54:29.064Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T16:26:25.567Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T16:27:35.499Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T16:32:10.897Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T19:51:42.288Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T19:54:13.852Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T19:54:18.468Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T20:31:25.410Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T20:31:37.443Z"}
+{"level":"warn","message":"Unauthorized access to /user route","timestamp":"2025-06-16T20:31:47.994Z"}
