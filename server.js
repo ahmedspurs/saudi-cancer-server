@@ -4,7 +4,7 @@ dotenv.config({ path: `${__dirname}/.env` });
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 // global.loadLocaleMessages = require("locnode");
-const session = require("express-session");
+// const session = require("express-session");
 const { sequelize } = require("./db/conn.js");
 const fileEasyUpload = require("express-easy-fileuploader");
 const file_upload = require("./middleware/media_middleware");
@@ -25,7 +25,7 @@ const roles = require("./routes/Roles.js");
 const user_roles = require("./routes/UserRoles.js");
 const users = require("./routes/Users.js");
 const base = require("./routes/Base.js");
-const auth = require("./routes/Auth.js");
+// const auth = require("./routes/Auth.js");
 const statistics = require("./routes/statistics.js");
 const governance_categories = require("./routes/GovernanceCategories.js");
 const governance = require("./routes/Governance.js");
@@ -43,9 +43,9 @@ const port = process.env.PORT || 3030;
 const app = express();
 const bodyParser = require("body-parser");
 const { authenticate } = require("./middleware/authenticate.js");
-const passport = require("passport");
+// const passport = require("passport");
 
-const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+// const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 
 app.use(
   cors({
@@ -59,22 +59,22 @@ app.use(
     credentials: true,
   })
 );
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "fallback_secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET || "fallback_secret",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       secure: false,
+//       sameSite: "lax",
+//       maxAge: 24 * 60 * 60 * 1000,
+//     },
+//   })
+// );
 
 // إعداد Passport.js
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use(
   fileEasyUpload({
@@ -90,7 +90,7 @@ app.use(cookieParser());
 app.use("/api/static", express.static("uploads"));
 app.use(file_upload);
 app.use(authenticate);
-app.use("/api/auth", auth); // إضافة مسارات المصادقة
+// app.use("/api/auth", auth); // إضافة مسارات المصادقة
 app.use("/api/chats", chats);
 app.use("/api/bank-accounts", bank_accounts);
 app.use("/api/contact-messages", contact_messages);
