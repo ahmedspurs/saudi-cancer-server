@@ -26,11 +26,16 @@ module.exports = function(sequelize, DataTypes) {
     amount: {
       type: DataTypes.DECIMAL(10,2),
       allowNull: true
+    },
+    qty: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     }
   }, {
     sequelize,
     tableName: 'donation_cases',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

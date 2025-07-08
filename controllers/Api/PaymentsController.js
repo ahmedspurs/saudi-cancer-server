@@ -1,5 +1,5 @@
 const { conn, sequelize } = require("../../db/conn");
-const { Sequelize, Op, Model, DataTypes } = require("sequelize");
+const { Sequelize, Op, Model, DataTypes, where } = require("sequelize");
 const fs = require("fs");
 const { sendEmail } = require("../../utils/mail");
 const path = require("path");
@@ -65,7 +65,11 @@ exports.checkout = async (req, res, next) => {
   try {
     const { donations = [], gifts = [] } = req.body;
     console.log({ user: req.body.user });
-
+    const gift_category = await conn.donation_categories.findOne({
+      where: {
+        name_en: "Gifts",
+      },
+    });
     // Validate input
     if (!donations.length && !gifts.length) {
       return res.status(400).json({
@@ -87,12 +91,7 @@ exports.checkout = async (req, res, next) => {
           throw new Error("Invalid donation data");
         }
 
-        await conn.donation_cases.create(
-          { case_id: donation.id, amount: donation.amount },
-          { transaction }
-        );
-
-        await conn.donations_common.create(
+        const common = await conn.donations_common.create(
           {
             payment_id: payment.id,
             case_id: donation.id,
@@ -102,6 +101,14 @@ exports.checkout = async (req, res, next) => {
             user_id: req?.user?.id ? req.user.id : null,
             user_name: req?.user?.id ? null : req.body.user?.name,
             user_phone: req?.user?.id ? null : req.body.user?.phone,
+          },
+          { transaction }
+        );
+        await conn.donation_cases.create(
+          {
+            case_id: donation.id,
+            amount: donation.amount,
+            donation_id: common.id,
           },
           { transaction }
         );
@@ -116,12 +123,7 @@ exports.checkout = async (req, res, next) => {
           throw new Error("Invalid gift data");
         }
 
-        const gift_result = await conn.gift_donations.create(
-          { ...gift },
-          { transaction }
-        );
-
-        await conn.donations_common.create(
+        const common = await conn.donations_common.create(
           {
             payment_id: payment.id,
             gift_id: gift_result.id, // Fixed typo: gift_if → gift_id
@@ -131,6 +133,10 @@ exports.checkout = async (req, res, next) => {
             user_name: req?.user?.id ? null : req.body.user?.name,
             user_phone: req?.user?.id ? null : req.body.user?.phone,
           },
+          { transaction }
+        );
+        const gift_result = await conn.gift_donations.create(
+          { ...gift, donation_id: common.id },
           { transaction }
         );
       }
@@ -231,19 +237,19 @@ exports.paymentWebhook = async (req, res, next) => {
 
     if (newStatus) {
       // Update payment status
-      await payment.update({ status: newStatus }, { transaction });
+      await conn.payments.update({ status: newStatus }, { transaction });
     }
 
     // 7. Log webhook event
-    await webhook_logs.create(
-      {
-        payment_id: paymentId,
-        event_type: eventType,
-        payload: JSON.stringify(event),
-        status: "processed",
-      },
-      { transaction }
-    );
+    // await webhook_logs.create(
+    //   {
+    //     payment_id: paymentId,
+    //     event_type: eventType,
+    //     payload: JSON.stringify(event),
+    //     status: "processed",
+    //   },
+    //   { transaction }
+    // );
 
     await transaction.commit();
 
@@ -256,13 +262,13 @@ exports.paymentWebhook = async (req, res, next) => {
     if (transaction) await transaction.rollback();
 
     // Log failed webhook attempt
-    await webhook_logs.create({
-      payment_id: req.body?.id || null,
-      event_type: req.body?.type || "unknown",
-      payload: JSON.stringify(req.body),
-      status: "failed",
-      error: error.message,
-    });
+    // await webhook_logs.create({
+    //   payment_id: req.body?.id || null,
+    //   event_type: req.body?.type || "unknown",
+    //   payload: JSON.stringify(req.body),
+    //   status: "failed",
+    //   error: error.message,
+    // });
 
     console.error("Moyasar webhook error:", error);
     return res.status(500).json({

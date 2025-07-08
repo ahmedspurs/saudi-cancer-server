@@ -6,7 +6,7 @@ const path = require("path");
 exports.search = async (req, res, next) => {
   console.log({ limit: req.body.limit });
   try {
-    const { col: searchCol, page, limit, search, type } = req.body;
+    const { col: searchCol, page, limit, search, type_id } = req.body;
     const offset = (page - 1) * limit;
 
     // Build the where clause
@@ -17,14 +17,15 @@ exports.search = async (req, res, next) => {
     };
 
     // Add type filter if provided
-    if (type) {
-      where.type = type; // Exact match for 'news' or 'gallery'
+    if (type_id) {
+      where.type_id = type_id; // Exact match for 'news' or 'gallery'
     }
 
     // Fetch paginated results
     const assets = await conn.posts.findAll({
       limit: parseInt(limit),
       offset: parseInt(offset),
+      include: ["type"],
       where,
     });
 
@@ -70,7 +71,7 @@ exports.getPosts = async (req, res, next) => {
 exports.createPosts = async (req, res, next) => {
   try {
     const {
-      type,
+      type_id,
       title_ar,
       title_en,
       content_ar,
@@ -85,17 +86,17 @@ exports.createPosts = async (req, res, next) => {
     console.log({ body_images: req.body.images });
 
     // Validation
-    if (!type || !["news", "gallery"].includes(type)) {
-      return res
-        .status(400)
-        .json({ status: false, msg: "نوع المنشور غير صالح" });
-    }
+    const type = await conn.post_types.findOne({
+      where: {
+        id: type_id,
+      },
+    });
     if (!title_ar || !title_en) {
       return res
         .status(400)
         .json({ status: false, msg: "العنوان بالعربية والإنجليزية مطلوب" });
     }
-    if (type === "gallery" && !req.body.images) {
+    if (type.code === "gallery" && !req.body.images) {
       return res
         .status(400)
         .json({ status: false, msg: "يجب تحميل صورة واحدة على الأقل للمعرض" });
@@ -117,7 +118,7 @@ exports.createPosts = async (req, res, next) => {
 
     // Prepare post data
     const postData = {
-      type,
+      type_id,
       slug: generatedSlug,
       title_ar,
       title_en,
@@ -131,10 +132,10 @@ exports.createPosts = async (req, res, next) => {
     // Create post
     const post = await conn.posts.create(postData);
 
-    // // Handle gallery images if type is gallery
+    // // Handle gallery images if type.code is gallery
     let images = req?.body?.images || [];
     let galleryImages = [];
-    if (type === "gallery" && req.body.images) {
+    if (type.code === "gallery" && req.body.images) {
       galleryImages = images.map((file, index) => ({
         post_id: post.id,
         image_url: file,
@@ -150,7 +151,7 @@ exports.createPosts = async (req, res, next) => {
     // Prepare response data
     const responseData = {
       post,
-      galleryImages: type === "gallery" ? galleryImages : [],
+      galleryImages: type.code === "gallery" ? galleryImages : [],
     };
 
     res.status(200).json({
@@ -171,6 +172,7 @@ exports.paginate = async (req, res, next) => {
     const result = await conn.posts.findAll({
       order: [["id", "DESC"]],
       offset: offset,
+      include: ["type"],
 
       limit: req.body.limit,
       subQuery: true,
@@ -192,7 +194,7 @@ exports.getPostsById = async (req, res, next) => {
   try {
     const result = await conn.posts.findOne({
       where: { id: req.params.id },
-      include: ["post_images"],
+      include: ["post_images", "type"],
     });
     res.status(200).json({ status: true, data: result });
   } catch (e) {

@@ -61,6 +61,8 @@ exports.search = async (req, res, next) => {
           as: "category",
           attributes: ["id", "name_ar", "name_en"],
         },
+        "case",
+        "gift",
       ],
       where: whereCondition,
       order: [["createdAt", "DESC"]],
@@ -130,7 +132,7 @@ exports.paginate = async (req, res, next) => {
     const result = await conn.donations_common.findAll({
       order: [["id", "DESC"]],
       offset: offset,
-      include: ["user", "category"],
+      include: ["user", "category", "case", "gift"],
 
       limit: req.body.limit,
       subQuery: true,

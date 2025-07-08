@@ -11,7 +11,7 @@ exports.search = async (req, res, next) => {
     .findAll({
       limit: req.body.limit,
       offset: offset,
-
+      include: ["donation", "case"],
       where: {
         [searchCol]: {
           [Op.like]: "%" + search + "%",
