@@ -97,6 +97,7 @@ exports.checkout = async (req, res, next) => {
             payment_id: payment.id,
             case_id: donation.id,
             amount: donation.amount,
+            qty: donation.qty,
             category_id: donation.category_id,
             user_id: req?.user?.id ? req.user.id : null,
             user_name: req?.user?.id ? null : req.body.user?.name,

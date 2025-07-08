@@ -17,11 +17,13 @@ const {
   updateAdminPassword,
   donorRegister,
   updateUserProfile,
+  adminLogin,
 } = require("../controllers/Api/UsersController.js");
 router.route("/").get(getUsers).post(register);
 
 router.route("/donor-register").post(donorRegister);
 router.route("/login").post(login);
+router.route("/admin-login").post(adminLogin);
 router.route("/edit-pass").post(updatePass);
 router.route("/paginate").post(paginate);
 router.route("/:id/password").post(updateAdminPassword);

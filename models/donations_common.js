@@ -43,6 +43,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL(10,2),
       allowNull: true
     },
+    qty: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1
+    },
     case_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,

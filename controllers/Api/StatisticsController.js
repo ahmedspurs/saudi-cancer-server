@@ -95,7 +95,7 @@ exports.getDonationsByCategory = async (req, res) => {
       group: ["category_id"],
     });
 
-    const labels = donations.map((d) => d.category.name_ar);
+    const labels = donations.map((d) => d?.category?.name_ar);
     const values = donations.map((d) => parseFloat(d.dataValues.total));
 
     res.status(200).json({

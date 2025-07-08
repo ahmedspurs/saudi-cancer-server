@@ -30,7 +30,7 @@ exports.getDonations = async (req, res) => {
         },
         {
           model: conn.payments,
-          as: "payments",
+          as: "payment",
           attributes: ["payment_status"],
           where: paymentWhere,
           required: status ? true : false,
@@ -94,7 +94,7 @@ exports.getDonationsByCategory = async (req, res) => {
         },
         {
           model: conn.payments,
-          as: "payments",
+          as: "payment",
           attributes: [],
           where: paymentWhere,
           required: status ? true : false,

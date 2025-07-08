@@ -117,7 +117,7 @@ exports.paginateDashboard = async (req, res, next) => {
 
     // Filter by category_id if provided
     if (category_id) {
-      where.category_id = category_id;
+      where.type = category_id;
     }
 
     // Filter by user_id if provided (for "My Cases")

@@ -307,84 +307,78 @@ exports.login = async (req, res) => {
 };
 
 exports.adminLogin = async (req, res) => {
-  console.log({
-    email: req?.body?.email,
-    password: req?.body?.password,
-  });
-  if (!req?.body?.email || !req?.body?.password)
-    return res.status(401).json({
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({
       status: false,
-      msg: "Please fill all required fields",
+      msg: "يرجى ملء جميع الحقول المطلوبة",
     });
+  }
+
   try {
-    const existingUser = await conn.users.findOne({
-      where: { email: req.body.email },
-      include: [
-        {
-          model: conn.user_roles,
-          as: "role",
-          where: {
-            code: "ADMIN",
-          },
-        },
-      ],
-    });
-    if (!existingUser)
-      return res
-        .status(401)
-        .json({ status: false, msg: "Wrong Email or Password" });
-    if (
-      existingUser?.auth_type == "google" ||
-      existingUser?.auth_type == "twitter" ||
-      existingUser?.auth_type == "linkedin"
-    ) {
+    const existingUser = await conn.users.findOne({ where: { email } });
+    if (!existingUser) {
       return res.status(401).json({
         status: false,
-        msg: "You can't login with this method, please use Google or Twitter or Linkedin",
+        msg: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
       });
     }
+
     const matchedPass = await bcrypt.compare(
-      req?.body?.password,
-      existingUser?.password
+      password,
+      existingUser.password_hash
     );
-    if (!matchedPass)
-      return res
-        .status(401)
-        .json({ status: false, msg: "Wrong Email or Password" });
-    const found_user = await conn.users.findOne({
-      where: {
-        id: existingUser?.id,
-      },
+    if (!matchedPass) {
+      return res.status(401).json({
+        status: false,
+        msg: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+      });
+    }
+
+    // ✅ إنشاء Access Token صالح لمدة 15 دقيقة
+    const accessToken = jwt.sign(
+      { id: existingUser.id, name: existingUser.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    // ✅ إنشاء Refresh Token صالح لمدة 7 أيام
+    const refreshToken = jwt.sign(
+      { id: existingUser.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // ✅ إرسال الـ Refresh Token في Cookie آمنة
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 7 أيام
     });
 
-    const token = jwt.sign(
-      {
-        user: {
-          id: existingUser?.id,
-          name: existingUser?.name,
-        },
-      },
-      SECRET
-    );
-
+    // ✅ إرسال الـ Access Token للواجهة الأمامية
     res.status(200).json({
       status: true,
       data: {
-        token,
+        accessToken,
         user: {
-          id: found_user?.id,
-          name: found_user?.name,
+          id: existingUser.id,
+          name: existingUser.name,
+          email: existingUser.email,
         },
       },
     });
   } catch (error) {
-    console.log({ error });
+    console.error({ error });
     res.status(500).json({
       status: false,
-      msg: "حدث خطأ ما أثناء تسجيل الدخول",
+      msg: "حدث خطأ أثناء تسجيل الدخول",
     });
   }
 };
+
 exports.sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
