@@ -173,6 +173,11 @@ exports.paymentWebhook = async (req, res, next) => {
     });
 
     if (!verifyMoyasarSignature(req.body, signature, webhookSecret)) {
+      console.log({
+        msg: "توقيع الويب هوك غير صالح",
+        signature,
+        webhookSecret,
+      });
       return res.status(400).json({
         status: false,
         msg: "توقيع الويب هوك غير صالح",
