@@ -254,18 +254,15 @@ exports.paymentWebhook = async (req, res, next) => {
     const newStatus = statusMap[eventType];
     console.log({ newStatus });
 
-    if (newStatus) {
-      // Update payment status
-      await conn.payments.update(
-        { status: newStatus },
-        {
-          where: {
-            payment_id: paymentId,
-          },
+    await conn.payments.update(
+      { status: newStatus },
+      {
+        where: {
+          payment_id: paymentId,
         },
-        { transaction }
-      );
-    }
+      },
+      { transaction }
+    );
 
     // 7. Log webhook event
     // await webhook_logs.create(
