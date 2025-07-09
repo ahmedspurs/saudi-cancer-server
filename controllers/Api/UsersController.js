@@ -76,7 +76,6 @@ exports.register = async (req, res, next) => {
       transaction,
     });
 
-    req.body.password_hash = req.body.password;
     // Create user
     const result = await conn.users.create(req.body, { transaction });
 
