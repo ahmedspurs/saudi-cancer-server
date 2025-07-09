@@ -82,12 +82,13 @@ exports.checkout = async (req, res, next) => {
 
     // Create payment record
     const payment = await conn.payments.create(req.body, { transaction });
+    console.log({ donations });
 
     // Process donations
     if (donations.length) {
       for (const donation of donations) {
         // Validate donation data
-        if (!donation.id || !donation.amount || !donation.category_id) {
+        if (!donation.id || !donation.amount) {
           throw new Error("Invalid donation data");
         }
 
