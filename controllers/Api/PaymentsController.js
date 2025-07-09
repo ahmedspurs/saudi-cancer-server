@@ -186,7 +186,8 @@ exports.paymentWebhook = async (req, res, next) => {
 
     // 2. Parse webhook payload
     const event = req.body;
-    const { id: paymentId, status, type: eventType } = event;
+    const paymentId = req.body.data.id;
+    const { status, type: eventType } = event;
 
     // 3. Validate required fields
     if (!paymentId || !eventType) {
