@@ -248,15 +248,11 @@ exports.paymentWebhook = async (req, res, next) => {
     const statusMap = {
       payment_paid: "success",
       payment_failed: "failed",
-      payment_authorized: "pending",
-      payment_captured: "success",
-      payment_refunded: "refunded",
-      payment_voided: "voided",
-      payment_abandoned: "abandoned",
-      payment_verified: "pending",
+      payment_canceled: "failed",
     };
 
     const newStatus = statusMap[eventType];
+    console.log({ newStatus });
 
     if (newStatus) {
       // Update payment status
