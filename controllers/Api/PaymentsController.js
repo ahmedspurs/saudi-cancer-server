@@ -254,7 +254,7 @@ exports.paymentWebhook = async (req, res, next) => {
     const newStatus = statusMap[eventType];
     console.log({ newStatus });
     const updatedPayment = await conn.payments.update(
-      { status: newStatus },
+      { payment_status: newStatus },
       {
         where: {
           payment_id: paymentId,
