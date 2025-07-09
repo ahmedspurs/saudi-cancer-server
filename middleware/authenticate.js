@@ -16,7 +16,6 @@ const publicRoutes = [
   { url: "/api/users/login", method: "POST" },
   { url: "/api/users/admin-login", method: "POST" },
   { url: "/api/users/donor-register", method: "POST" },
-  { url: "/api/payments/checkout?:id", method: "POST" },
   { url: "/api/payments/verify?:id", method: "POST" },
   { url: "/api/payments/webhook?:id", method: "POST" },
   { url: "/api/payments/webhook", method: "POST" },
@@ -37,6 +36,8 @@ const halfPublic = [{ url: "/api/payments/checkout", method: "POST" }];
 
 // Middleware to authenticate JWT tokens
 exports.authenticate = (req, res, next) => {
+  console.log({ url: req.originalUrl });
+
   // Check if the request matches a public route
   const isPublicRoute = publicRoutes.some(
     (route) =>
