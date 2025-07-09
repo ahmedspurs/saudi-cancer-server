@@ -168,6 +168,10 @@ exports.paymentWebhook = async (req, res, next) => {
     const signature = req.headers["x-moyasar-signature"];
     const webhookSecret = process.env.MOYASAR_WEBHOOK_SECRET; // Set in .env
 
+    console.log({
+      body: req.body,
+    });
+
     if (!verifyMoyasarSignature(req.body, signature, webhookSecret)) {
       return res.status(400).json({
         status: false,
