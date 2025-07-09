@@ -346,7 +346,7 @@ exports.verify = async (req, res, next) => {
     }
 
     // Check payment status (assuming payments table has a status field)
-    if (payment.status !== "completed") {
+    if (payment.payment_status != "success") {
       return res.status(400).json({
         status: false,
         msg: "الدفع لم يكتمل بعد",
