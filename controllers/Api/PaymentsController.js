@@ -165,7 +165,7 @@ exports.paymentWebhook = async (req, res, next) => {
   let transaction;
   try {
     // 1. Verify webhook signature
-    const signature = req.headers["x-moyasar-signature"];
+    const signature = req.body.secret_token;
     const webhookSecret = process.env.MOYASAR_WEBHOOK_SECRET; // Set in .env
 
     console.log({
@@ -304,11 +304,11 @@ exports.paymentWebhook = async (req, res, next) => {
 // Helper function to verify Moyasar webhook signature
 function verifyMoyasarSignature(payload, signature, secret) {
   try {
-    const computedSignature = crypto
-      .createHmac("sha256", secret)
-      .update(JSON.stringify(payload))
-      .digest("hex");
-    return computedSignature === signature;
+    if (signature == process.env.WEBHOOK_KEY) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.error("Moyasar signature verification failed:", error);
     return false;
