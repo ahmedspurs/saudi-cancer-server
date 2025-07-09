@@ -17,14 +17,14 @@ exports.register = async (req, res, next) => {
 
     // Hash password
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(req?.body?.password_hash, salt);
+    const hash = await bcrypt.hash(req?.body?.password, salt);
     req.body.password_hash = hash;
 
     // Validate required fields
     if (
       !req?.body?.name ||
       !req?.body?.email ||
-      !req?.body?.password_hash ||
+      !req?.body?.password ||
       !req?.body?.role_id
     ) {
       return res.status(400).json({
@@ -54,7 +54,7 @@ exports.register = async (req, res, next) => {
     }
 
     // Validate password length
-    if (req?.body?.password_hash.length < 6) {
+    if (req?.body?.password.length < 6) {
       return res.status(400).json({
         status: false,
         msg: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
@@ -76,6 +76,7 @@ exports.register = async (req, res, next) => {
       transaction,
     });
 
+    req.body.password_hash = req.body.password;
     // Create user
     const result = await conn.users.create(req.body, { transaction });
 
@@ -131,7 +132,7 @@ exports.donorRegister = async (req, res, next) => {
     req.body.password_hash = hash;
 
     // Validate required fields
-    if (!req?.body?.name || !req?.body?.email || !req?.body?.password_hash) {
+    if (!req?.body?.name || !req?.body?.email || !req?.body?.password) {
       return res.status(400).json({
         status: false,
         msg: "Please fill all required fields (name, email, password, role_ids as array)",
@@ -159,7 +160,7 @@ exports.donorRegister = async (req, res, next) => {
     }
 
     // Validate password length
-    if (req?.body?.password_hash.length < 6) {
+    if (req?.body?.password.length < 6) {
       return res.status(400).json({
         status: false,
         msg: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
