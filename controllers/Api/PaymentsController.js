@@ -224,14 +224,14 @@ exports.paymentWebhook = async (req, res, next) => {
 
     // 6. Map Moyasar status to your database status
     const statusMap = {
-      payment_paid: "completed",
+      payment_paid: "success",
       payment_failed: "failed",
-      payment_authorized: "authorized",
-      payment_captured: "completed",
+      payment_authorized: "pending",
+      payment_captured: "success",
       payment_refunded: "refunded",
       payment_voided: "voided",
       payment_abandoned: "abandoned",
-      payment_verified: "verified",
+      payment_verified: "pending",
     };
 
     const newStatus = statusMap[eventType];
