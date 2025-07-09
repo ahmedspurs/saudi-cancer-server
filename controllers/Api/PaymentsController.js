@@ -185,6 +185,10 @@ exports.paymentWebhook = async (req, res, next) => {
 
     // 3. Validate required fields
     if (!paymentId || !eventType) {
+      console.log({
+        msg: "بيانات الويب هوك غير مكتملة",
+      });
+
       return res.status(400).json({
         status: false,
         msg: "بيانات الويب هوك غير مكتملة",
@@ -204,6 +208,10 @@ exports.paymentWebhook = async (req, res, next) => {
     ];
 
     if (!supportedEvents.includes(eventType)) {
+      console.log({
+        msg: "نوع الحدث غير مدعوم، تم استلامه",
+      });
+
       return res.status(200).json({
         status: true,
         msg: "نوع الحدث غير مدعوم، تم استلامه",
@@ -219,6 +227,10 @@ exports.paymentWebhook = async (req, res, next) => {
     });
 
     if (!payment) {
+      console.log({
+        msg: "الدفع غير موجود",
+      });
+
       await transaction.rollback();
       return res.status(404).json({
         status: false,
