@@ -56,6 +56,10 @@ app.use(
       "http://localhost:3050",
       "http://localhost:3001",
       "http://192.168.111.69",
+      "https://store.ratlclinic.com",
+      "http://store.ratlclinic.com",
+      "https://dashboard.ratlclinic.com",
+      "http://dashboard.ratlclinic.com",
     ],
     credentials: true,
   })
