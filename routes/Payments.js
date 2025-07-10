@@ -56,6 +56,7 @@ router.post("/moyasar", async (req, res) => {
     const response = await axios.post(
       "https://api.moyasar.com/v1/payments",
       {
+        given_id: source.token,
         amount,
         currency,
         description,
@@ -63,6 +64,8 @@ router.post("/moyasar", async (req, res) => {
           type: source.type,
           token: source.token,
           ...tokenData,
+          statement_descriptor: "Saudi Cancer",
+          "3ds": true,
         },
         callback_url,
       },
