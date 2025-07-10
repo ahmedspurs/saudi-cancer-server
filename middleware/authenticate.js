@@ -16,7 +16,7 @@ const publicRoutes = [
   { url: "/api/users/login", method: "POST" },
   { url: "/api/users/admin-login", method: "POST" },
   { url: "/api/users/donor-register", method: "POST" },
-  { url: "/api/payments/verify?:id", method: "POST" },
+  { url: "/api/payments/verify?:paymentId", method: "GET" },
   { url: "/api/payments/webhook?:id", method: "POST" },
   { url: "/api/payments/webhook", method: "POST" },
   { url: "/api/tokens/refresh-token", method: "POST" },
