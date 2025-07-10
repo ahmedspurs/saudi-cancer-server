@@ -72,6 +72,7 @@ router.post("/moyasar", async (req, res) => {
       {
         auth: {
           username: process.env.MOYASAR_SECRET_KEY,
+          password: "",
         },
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +82,31 @@ router.post("/moyasar", async (req, res) => {
 
     // Validate response
 
-    console.log("completed", transaction_url);
+    console.log(
+      {
+        given_id: source.token,
+        amount,
+        currency,
+        description,
+        source: {
+          type: source.type,
+          token: source.token,
+          ...tokenData,
+          statement_descriptor: "Saudi Cancer",
+          "3ds": true,
+        },
+        callback_url,
+      },
+      {
+        auth: {
+          username: process.env.MOYASAR_SECRET_KEY,
+          password: "",
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     res.json({
       id: response.data.id,
