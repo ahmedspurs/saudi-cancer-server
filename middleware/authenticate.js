@@ -12,7 +12,7 @@ const publicRoutes = [
   { url: "/api/payment-methods", method: "GET" },
   { url: "/api/bank-accounts", method: "GET" },
   { url: "/api/tokens/logout", method: "GET" },
-  { url: "/api/service-work", method: "GET" },
+  { url: "/api/payments/user/reciept", method: "POST" },
   { url: "/api/users/login", method: "POST" },
   { url: "/api/users/admin-login", method: "POST" },
   { url: "/api/users/donor-register", method: "POST" },

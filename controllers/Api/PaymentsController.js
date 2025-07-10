@@ -346,9 +346,20 @@ exports.verify = async (req, res, next) => {
     }
 
     // Check payment status (assuming payments table has a status field)
-    if (payment.payment_status != "success") {
+    if (payment.payment_status == "pending") {
       return res.status(400).json({
         status: false,
+        payment_status: "pending",
+
+        msg: "الدفع لم يكتمل بعد",
+      });
+    }
+
+    if (payment.payment_status == "failed") {
+      return res.status(400).json({
+        status: false,
+        payment_status: "failed",
+
         msg: "الدفع لم يكتمل بعد",
       });
     }
@@ -375,6 +386,7 @@ exports.verify = async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
+      payment_status: "success",
       msg: "تم التحقق من الدفع بنجاح",
       data: payment,
     });
@@ -460,9 +472,6 @@ exports.getUserPaymentsById = async (req, res, next) => {
         {
           model: conn.donations_common,
           as: "donations_commons",
-          where: {
-            user_id: req.user.id,
-          },
           include: ["user", "gift", "case"],
         },
       ],
