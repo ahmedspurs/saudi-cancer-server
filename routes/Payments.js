@@ -51,7 +51,31 @@ router.post("/moyasar", async (req, res) => {
     console.error("Moyasar secret key is not configured");
     return res.status(500).json({ message: "Server configuration error" });
   }
-
+  console.log(
+    {
+      given_id: source.token,
+      amount,
+      currency,
+      description,
+      source: {
+        type: source.type,
+        token: source.token,
+        ...tokenData,
+        statement_descriptor: "Saudi Cancer",
+        "3ds": true,
+      },
+      callback_url,
+    },
+    {
+      auth: {
+        username: process.env.MOYASAR_SECRET_KEY,
+        password: "",
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   try {
     const response = await axios.post(
       "https://api.moyasar.com/v1/payments",
@@ -81,32 +105,6 @@ router.post("/moyasar", async (req, res) => {
     );
 
     // Validate response
-
-    console.log(
-      {
-        given_id: source.token,
-        amount,
-        currency,
-        description,
-        source: {
-          type: source.type,
-          token: source.token,
-          ...tokenData,
-          statement_descriptor: "Saudi Cancer",
-          "3ds": true,
-        },
-        callback_url,
-      },
-      {
-        auth: {
-          username: process.env.MOYASAR_SECRET_KEY,
-          password: "",
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
 
     res.json({
       id: response.data.id,
