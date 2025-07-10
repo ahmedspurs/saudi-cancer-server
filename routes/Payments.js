@@ -92,6 +92,7 @@ router.post("/moyasar", async (req, res) => {
     );
 
     // Validate response
+    console.log("completed");
 
     res.json({
       id: response.data.id,
