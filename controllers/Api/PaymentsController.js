@@ -167,16 +167,7 @@ exports.paymentWebhook = async (req, res, next) => {
     const signature = req.body.secret_token;
     const webhookSecret = process.env.MOYASAR_WEBHOOK_SECRET; // Set in .env
 
-    console.log({
-      body: req.body,
-    });
-
     if (!verifyMoyasarSignature(req.body, signature, webhookSecret)) {
-      console.log({
-        msg: "توقيع الويب هوك غير صالح",
-        signature,
-        webhookSecret,
-      });
       return res.status(400).json({
         status: false,
         msg: "توقيع الويب هوك غير صالح",
@@ -190,10 +181,6 @@ exports.paymentWebhook = async (req, res, next) => {
 
     // 3. Validate required fields
     if (!paymentId || !eventType) {
-      console.log({
-        msg: "بيانات الويب هوك غير مكتملة",
-      });
-
       return res.status(400).json({
         status: false,
         msg: "بيانات الويب هوك غير مكتملة",
@@ -213,10 +200,6 @@ exports.paymentWebhook = async (req, res, next) => {
     ];
 
     if (!supportedEvents.includes(eventType)) {
-      console.log({
-        msg: "نوع الحدث غير مدعوم، تم استلامه",
-      });
-
       return res.status(200).json({
         status: true,
         msg: "نوع الحدث غير مدعوم، تم استلامه",
@@ -233,7 +216,6 @@ exports.paymentWebhook = async (req, res, next) => {
     };
 
     const newStatus = statusMap[eventType];
-    console.log({ newStatus });
     const updatedPayment = await conn.payments.update(
       { payment_status: newStatus },
       {
@@ -245,10 +227,6 @@ exports.paymentWebhook = async (req, res, next) => {
     );
 
     if (!updatedPayment) {
-      console.log({
-        msg: "الدفع غير موجود",
-      });
-
       await transaction.rollback();
       return res.status(404).json({
         status: false,
@@ -265,15 +243,6 @@ exports.paymentWebhook = async (req, res, next) => {
     });
   } catch (error) {
     if (transaction) await transaction.rollback();
-
-    // Log failed webhook attempt
-    // await webhook_logs.create({
-    //   payment_id: req.body?.id || null,
-    //   event_type: req.body?.type || "unknown",
-    //   payload: JSON.stringify(req.body),
-    //   status: "failed",
-    //   error: error.message,
-    // });
 
     console.error("Moyasar webhook error:", error);
     return res.status(500).json({
