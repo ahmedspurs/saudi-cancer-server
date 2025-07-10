@@ -98,7 +98,7 @@ router.post("/moyasar", async (req, res) => {
     if (error.response) {
       // Moyasar API returned an error response
       const { status, data } = error.response;
-      console.error("Moyasar API error:", { status, errors: data.errors });
+      console.error("Moyasar API error:", { status, errors: error });
       return res.status(status || 500).json({
         message: "Payment creation failed",
         error: data?.message || error.message,
