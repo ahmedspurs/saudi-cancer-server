@@ -164,7 +164,6 @@ exports.checkout = async (req, res, next) => {
 exports.paymentWebhook = async (req, res, next) => {
   let transaction;
   try {
-    // 1. Verify webhook signature
     const signature = req.body.secret_token;
     const webhookSecret = process.env.MOYASAR_WEBHOOK_SECRET; // Set in .env
 
@@ -226,24 +225,6 @@ exports.paymentWebhook = async (req, res, next) => {
 
     transaction = await sequelize.transaction();
 
-    // 5. Find payment record
-    const payment = await conn.payments.findOne({
-      where: { payment_id: paymentId },
-      transaction,
-    });
-
-    if (!payment) {
-      console.log({
-        msg: "الدفع غير موجود",
-      });
-
-      await transaction.rollback();
-      return res.status(404).json({
-        status: false,
-        msg: "الدفع غير موجود",
-      });
-    }
-
     // 6. Map Moyasar status to your database status
     const statusMap = {
       payment_paid: "success",
@@ -262,18 +243,18 @@ exports.paymentWebhook = async (req, res, next) => {
         transaction,
       }
     );
-    console.log({ updatedPayment });
 
-    // 7. Log webhook event
-    // await webhook_logs.create(
-    //   {
-    //     payment_id: paymentId,
-    //     event_type: eventType,
-    //     payload: JSON.stringify(event),
-    //     status: "processed",
-    //   },
-    //   { transaction }
-    // );
+    if (!updatedPayment) {
+      console.log({
+        msg: "الدفع غير موجود",
+      });
+
+      await transaction.rollback();
+      return res.status(404).json({
+        status: false,
+        msg: "الدفع غير موجود",
+      });
+    }
 
     await transaction.commit();
 
