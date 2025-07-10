@@ -68,7 +68,7 @@ router.post("/moyasar", async (req, res) => {
       },
       {
         auth: {
-          username: process.env.MOYASAR_SECRET_KEY, // Only secret key is needed
+          username: process.env.MOYASAR_SECRET_KEY,
         },
         headers: {
           "Content-Type": "application/json",
