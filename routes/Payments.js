@@ -88,12 +88,16 @@ router.post("/moyasar", async (req, res) => {
         .json({ message: "Invalid response from payment gateway" });
     }
 
+    console.log("completed");
+
     res.json({
       id: response.data.id,
       status: response.data.status,
       transaction_url: response.data.source.transaction_url,
     });
   } catch (error) {
+    console.log("incompleted");
+
     // Handle specific Moyasar API errors
     if (error.response) {
       // Moyasar API returned an error response
