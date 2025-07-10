@@ -32,19 +32,6 @@ router.post("/moyasar", async (req, res) => {
     req.body;
 
   // Input validation
-  if (
-    !amount ||
-    !currency ||
-    !description ||
-    !source ||
-    !source.type ||
-    !source.token ||
-    !callback_url
-  ) {
-    return res
-      .status(400)
-      .json({ message: "Missing or invalid required fields" });
-  }
 
   // Validate environment variable
   if (!process.env.MOYASAR_SECRET_KEY) {
