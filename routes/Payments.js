@@ -76,7 +76,7 @@ router.post("/moyasar", async (req, res) => {
       }
     );
 
-    // Validate response data
+    // Validate response
     if (
       !response.data?.id ||
       !response.data?.status ||
