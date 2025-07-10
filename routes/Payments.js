@@ -60,7 +60,7 @@ router.post("/moyasar", async (req, res) => {
         currency,
         description,
         source: {
-          type: "creditcard",
+          type: source.type,
           token: source.token,
           ...tokenData,
         },
