@@ -19,6 +19,7 @@ const publicRoutes = [
   { url: "/api/payments/verify?:paymentId", method: "GET" },
   { url: "/api/payments/webhook?:id", method: "POST" },
   { url: "/api/payments/webhook", method: "POST" },
+  { url: "/api/payments/moyasar", method: "POST" },
   { url: "/api/tokens/refresh-token", method: "POST" },
   { url: "/api/contact-messages", method: "POST" },
   { url: "/api/service-work/search", method: "GET" },
