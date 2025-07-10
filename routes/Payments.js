@@ -77,16 +77,6 @@ router.post("/moyasar", async (req, res) => {
     );
 
     // Validate response
-    if (
-      !response.data?.id ||
-      !response.data?.status ||
-      !response.data?.source?.transaction_url
-    ) {
-      console.error("Unexpected Moyasar API response:", response.data);
-      return res
-        .status(500)
-        .json({ message: "Invalid response from payment gateway" });
-    }
 
     console.log("completed", transaction_url);
 
