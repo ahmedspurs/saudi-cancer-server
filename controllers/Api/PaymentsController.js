@@ -5,6 +5,7 @@ const { sendEmail } = require("../../utils/mail");
 const path = require("path");
 const crypto = require("crypto");
 const SendSMS = require("../../services/sms");
+const smsService = new SendSMS();
 
 exports.search = async (req, res, next) => {
   var searchCol = req.body.col;
@@ -62,8 +63,6 @@ const createDonationCases = async (daonations) => {
 };
 
 exports.checkout = async (req, res, next) => {
-  const smsService = new SendSMS();
-
   let transaction;
   try {
     const { donations = [], gifts = [] } = req.body;
@@ -140,7 +139,7 @@ exports.checkout = async (req, res, next) => {
         }
 
         let sms_send;
-        if (req.body.status) {
+        if (req.body.status == "success") {
           const message = gift?.message
             ? gift?.message
             : `تم التبرع لجمعية السرطان بالمنطقة الشرقية نيابة عن ${gift?.receiver_name}، جعله الله شفاءً وأجرًا.`;
@@ -282,12 +281,11 @@ exports.paymentWebhook = async (req, res, next) => {
           let sms_send;
           const message = gift?.message
             ? gift?.message
-            : `"تم هذا التبرع إلى جمعية السرطان السعودية بالمنطقة الشرقية
-  نيابةً عن ${gift?.receiver_name}، سائلين الله أن يجعل أثره شفاءً ورحمة،
-  وأن يُثقل به الموازين، ويُضاعف به الأجر،
-  وأن يُحيي به الأمل في قلوب المرضى والمحتاجين.
-  نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
-          sms_send = await SendSMS.sendSMSMessage(gift);
+            : `تم التبرع لجمعية السرطان بالمنطقة الشرقية نيابة عن ${gift?.receiver_name}، جعله الله شفاءً وأجرًا.`;
+          sms_send = await smsService.sendSMSMessage(
+            message,
+            gift?.receiver_phone
+          );
           const gift_result = await conn.gift_donations.create(
             { sms_sent: sms_send ? 1 : 0 },
             { transaction }
