@@ -106,6 +106,7 @@ exports.checkout = async (req, res, next) => {
             user_id: req?.user?.id ? req.user.id : null,
             user_name: req?.user?.id ? null : req.body.user?.name,
             user_phone: req?.user?.id ? null : req.body.user?.phone,
+            status: req.body?.status,
           },
           { transaction }
         );
@@ -137,6 +138,7 @@ exports.checkout = async (req, res, next) => {
             user_id: req?.user?.id ? req.user.id : null,
             user_name: req?.user?.id ? null : req.body.user?.name,
             user_phone: req?.user?.id ? null : req.body.user?.phone,
+            status: req.body?.status,
           },
           { transaction }
         );
