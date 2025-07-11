@@ -62,6 +62,8 @@ const createDonationCases = async (daonations) => {
 };
 
 exports.checkout = async (req, res, next) => {
+  const smsService = new SendSMS();
+
   let transaction;
   try {
     const { donations = [], gifts = [] } = req.body;
@@ -146,7 +148,10 @@ exports.checkout = async (req, res, next) => {
 وأن يُثقل به الموازين، ويُضاعف به الأجر،
 وأن يُحيي به الأمل في قلوب المرضى والمحتاجين.
 نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
-          sms_send = await SendSMS.sendSMSMessage(message, gift?.receiver_name);
+          sms_send = await smsService.sendSMSMessage(
+            message,
+            gift?.receiver_name
+          );
           if (!sms_send) {
             throw new Error("sms not sent");
           }
