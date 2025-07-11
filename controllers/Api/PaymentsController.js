@@ -137,19 +137,6 @@ exports.checkout = async (req, res, next) => {
           throw new Error("Invalid gift data");
         }
 
-        const common = await conn.donations_common.create(
-          {
-            payment_id: payment.id,
-            gift_id: gift_result.id, // Fixed typo: gift_if → gift_id
-            amount: gift.amount,
-            category_id: gift.category_id,
-            user_id: req?.user?.id ? req.user.id : null,
-            user_name: req?.user?.id ? null : req.body.user?.name,
-            user_phone: req?.user?.id ? null : req.body.user?.phone,
-            status: req.body?.status,
-          },
-          { transaction }
-        );
         let sms_send;
         if (req.body.status == "paid") {
           const message = gift?.message
@@ -163,6 +150,19 @@ exports.checkout = async (req, res, next) => {
         }
         const gift_result = await conn.gift_donations.create(
           { ...gift, sms_sent: sms_send ? 1 : 0, donation_id: common.id },
+          { transaction }
+        );
+        const common = await conn.donations_common.create(
+          {
+            payment_id: payment.id,
+            gift_id: gift_result.id, // Fixed typo: gift_if → gift_id
+            amount: gift.amount,
+            category_id: gift.category_id,
+            user_id: req?.user?.id ? req.user.id : null,
+            user_name: req?.user?.id ? null : req.body.user?.name,
+            user_phone: req?.user?.id ? null : req.body.user?.phone,
+            status: req.body?.status,
+          },
           { transaction }
         );
       }
