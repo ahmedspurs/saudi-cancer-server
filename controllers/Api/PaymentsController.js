@@ -143,11 +143,7 @@ exports.checkout = async (req, res, next) => {
         if (req.body.status) {
           const message = gift?.message
             ? gift?.message
-            : `"تم هذا التبرع إلى جمعية السرطان السعودية بالمنطقة الشرقية
-نيابةً عن ${gift?.receiver_name}، سائلين الله أن يجعل أثره شفاءً ورحمة،
-وأن يُثقل به الموازين، ويُضاعف به الأجر،
-وأن يُحيي به الأمل في قلوب المرضى والمحتاجين.
-نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
+            : `تم التبرع لجمعية السرطان بالمنطقة الشرقية نيابة عن ${gift?.receiver_name}، جعله الله شفاءً وأجرًا.`;
           sms_send = await smsService.sendSMSMessage(
             message,
             gift?.receiver_phone
