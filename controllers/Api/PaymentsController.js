@@ -4,6 +4,7 @@ const fs = require("fs");
 const { sendEmail } = require("../../utils/mail");
 const path = require("path");
 const crypto = require("crypto");
+const SendSMS = require("../../services/sms");
 
 exports.search = async (req, res, next) => {
   var searchCol = req.body.col;
@@ -149,8 +150,19 @@ exports.checkout = async (req, res, next) => {
           },
           { transaction }
         );
+        let sms_send;
+        if (req.body.status == "paid") {
+          const message = gift?.message
+            ? gift?.message
+            : `"تم هذا التبرع إلى جمعية السرطان السعودية بالمنطقة الشرقية
+نيابةً عن ${gift?.receiver_name}، سائلين الله أن يجعل أثره شفاءً ورحمة،
+وأن يُثقل به الموازين، ويُضاعف به الأجر،
+وأن يُحيي به الأمل في قلوب المرضى والمحتاجين.
+نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
+          sms_send = await SendSMS.sendSMSMessage(gift);
+        }
         const gift_result = await conn.gift_donations.create(
-          { ...gift, donation_id: common.id },
+          { ...gift, sms_sent: sms_send ? 1 : 0, donation_id: common.id },
           { transaction }
         );
       }
@@ -245,6 +257,39 @@ exports.paymentWebhook = async (req, res, next) => {
         status: false,
         msg: "الدفع غير موجود",
       });
+    } else {
+      const payment = await conn.payments.findOne(
+        {
+          where: {
+            payment_id: paymentId,
+          },
+          include: [
+            {
+              model: conn.donations_common,
+              as: "donations_commons",
+              include: ["gift", "case"],
+            },
+          ],
+        },
+        { transaction }
+      );
+      if (newStatus == "success") {
+        payment.donations_commons.forEach(async (gift) => {
+          let sms_send;
+          const message = gift?.message
+            ? gift?.message
+            : `"تم هذا التبرع إلى جمعية السرطان السعودية بالمنطقة الشرقية
+  نيابةً عن ${gift?.receiver_name}، سائلين الله أن يجعل أثره شفاءً ورحمة،
+  وأن يُثقل به الموازين، ويُضاعف به الأجر،
+  وأن يُحيي به الأمل في قلوب المرضى والمحتاجين.
+  نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
+          sms_send = await SendSMS.sendSMSMessage(gift);
+          const gift_result = await conn.gift_donations.create(
+            { sms_sent: sms_send ? 1 : 0 },
+            { transaction }
+          );
+        });
+      }
     }
 
     await transaction.commit();
