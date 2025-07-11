@@ -150,7 +150,7 @@ exports.checkout = async (req, res, next) => {
 نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
           sms_send = await smsService.sendSMSMessage(
             message,
-            gift?.receiver_name
+            gift?.receiver_phone
           );
           if (!sms_send) {
             throw new Error("sms not sent");
