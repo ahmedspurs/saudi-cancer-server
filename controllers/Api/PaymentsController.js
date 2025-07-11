@@ -138,7 +138,7 @@ exports.checkout = async (req, res, next) => {
         }
 
         let sms_send;
-        if (req.body.status == "paid") {
+        if (req.body.status) {
           const message = gift?.message
             ? gift?.message
             : `"تم هذا التبرع إلى جمعية السرطان السعودية بالمنطقة الشرقية
