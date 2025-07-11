@@ -244,6 +244,8 @@ exports.paymentWebhook = async (req, res, next) => {
     };
 
     const newStatus = statusMap[eventType];
+    console.log({ newStatus });
+
     const updatedPayment = await conn.payments.update(
       { payment_status: newStatus },
       {
@@ -287,9 +289,14 @@ exports.paymentWebhook = async (req, res, next) => {
               message,
               gift.gift?.receiver_phone
             );
-            const gift_result = await conn.gift_donations.create(
+            const gift_result = await conn.gift_donations.update(
               { sms_sent: sms_send ? 1 : 0 },
-              { transaction }
+              {
+                where: {
+                  id: gift?.gift?.id,
+                },
+                transaction,
+              }
             );
           } else if (gift.case) {
             console.log("case donation", gift.case);
