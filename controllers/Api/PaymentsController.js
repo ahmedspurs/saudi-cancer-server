@@ -84,7 +84,14 @@ exports.checkout = async (req, res, next) => {
     // Create payment record
     if (req.body.status == "paid") {
       req.body.payment_status = "success";
+    } else if (req.body.status == "failed") {
+      req.body.payment_status = "failed";
+    } else {
+      req.body.payment_status = "pending";
     }
+
+    console.log({ payment: req.body });
+
     const payment = await conn.payments.create(req.body, { transaction });
     console.log({ donations });
 
