@@ -146,7 +146,10 @@ exports.checkout = async (req, res, next) => {
 وأن يُثقل به الموازين، ويُضاعف به الأجر،
 وأن يُحيي به الأمل في قلوب المرضى والمحتاجين.
 نسأل الله أن يُبارك في هذا العطاء ويجعله خالصًا لوجهه الكريم.`;
-          sms_send = await SendSMS.sendSMSMessage(gift);
+          sms_send = await SendSMS.sendSMSMessage(message, gift?.receiver_name);
+          if (!sms_send) {
+            throw new Error("sms not sent");
+          }
         }
         const gift_result = await conn.gift_donations.create(
           { ...gift, sms_sent: sms_send ? 1 : 0 },
