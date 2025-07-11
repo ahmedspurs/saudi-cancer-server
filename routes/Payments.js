@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { v4: uuidv4 } = require("uuid"); // For Node.js
+
 const {
   getPayments,
   getPaymentsById,
@@ -32,7 +34,7 @@ router.post("/moyasar", async (req, res) => {
     req.body;
 
   // Input validation
-
+  const given_id = uuidv4(); // Generates a random UUID (version 4)
   // Validate environment variable
   if (!process.env.MOYASAR_SECRET_KEY) {
     console.error("Moyasar secret key is not configured");
@@ -40,7 +42,7 @@ router.post("/moyasar", async (req, res) => {
   }
   console.log(
     {
-      // given_id: source.token,
+      given_id,
       amount,
       currency,
       description,
