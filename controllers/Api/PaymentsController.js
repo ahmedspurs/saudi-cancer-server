@@ -273,7 +273,7 @@ exports.paymentWebhook = async (req, res, next) => {
         },
         { transaction }
       );
-      if (newStatus == "success") {
+      if (newStatus == "success" && payment) {
         payment.donations_commons.forEach(async (gift) => {
           let sms_send;
           const message = gift?.message
