@@ -40,7 +40,7 @@ router.post("/moyasar", async (req, res) => {
   }
   console.log(
     {
-      given_id: source.token,
+      // given_id: source.token,
       amount,
       currency,
       description,
