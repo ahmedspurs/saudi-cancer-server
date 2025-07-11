@@ -149,7 +149,7 @@ exports.checkout = async (req, res, next) => {
           sms_send = await SendSMS.sendSMSMessage(gift);
         }
         const gift_result = await conn.gift_donations.create(
-          { ...gift, sms_sent: sms_send ? 1 : 0, donation_id: common.id },
+          { ...gift, sms_sent: sms_send ? 1 : 0 },
           { transaction }
         );
         const common = await conn.donations_common.create(
