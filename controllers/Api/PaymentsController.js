@@ -79,8 +79,12 @@ exports.checkout = async (req, res, next) => {
     }
 
     transaction = await sequelize.transaction();
+    console.log({ checkout_body: req.body });
 
     // Create payment record
+    if (req.body.status == "paid") {
+      req.body.payment_status = "success";
+    }
     const payment = await conn.payments.create(req.body, { transaction });
     console.log({ donations });
 
