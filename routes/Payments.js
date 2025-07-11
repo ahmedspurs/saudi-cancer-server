@@ -69,7 +69,7 @@ router.post("/moyasar", async (req, res) => {
     const response = await axios.post(
       "https://api.moyasar.com/v1/payments",
       {
-        given_id: source.token,
+        given_id,
         amount,
         currency,
         description,
