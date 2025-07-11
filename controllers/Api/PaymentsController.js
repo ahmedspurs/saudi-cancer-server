@@ -278,18 +278,22 @@ exports.paymentWebhook = async (req, res, next) => {
       );
       if (newStatus == "success" && payment) {
         payment.donations_commons.forEach(async (gift) => {
-          let sms_send;
-          const message = gift?.message
-            ? gift?.message
-            : `تم التبرع لجمعية السرطان بالمنطقة الشرقية نيابة عن ${gift?.receiver_name}، جعله الله شفاءً وأجرًا.`;
-          sms_send = await smsService.sendSMSMessage(
-            message,
-            gift?.receiver_phone
-          );
-          const gift_result = await conn.gift_donations.create(
-            { sms_sent: sms_send ? 1 : 0 },
-            { transaction }
-          );
+          if (gift.gift) {
+            let sms_send;
+            const message = gift.gift?.message
+              ? gift.gift?.message
+              : `تم التبرع لجمعية السرطان بالمنطقة الشرقية نيابة عن ${gift?.receiver_name}، جعله الله شفاءً وأجرًا.`;
+            sms_send = await smsService.sendSMSMessage(
+              message,
+              gift.gift?.receiver_phone
+            );
+            const gift_result = await conn.gift_donations.create(
+              { sms_sent: sms_send ? 1 : 0 },
+              { transaction }
+            );
+          } else if (gift.case) {
+            console.log("case donation", gift.case);
+          }
         });
       }
     }
