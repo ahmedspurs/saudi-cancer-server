@@ -139,7 +139,7 @@ exports.checkout = async (req, res, next) => {
         }
 
         let sms_send;
-        if (req.body.status == "success") {
+        if (req.body.status == "paid") {
           const message = gift?.message
             ? gift?.message
             : `تم التبرع لجمعية السرطان بالمنطقة الشرقية نيابة عن ${gift?.receiver_name}، جعله الله شفاءً وأجرًا.`;
