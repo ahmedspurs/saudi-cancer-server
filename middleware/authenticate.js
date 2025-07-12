@@ -27,7 +27,7 @@ const publicRoutes = [
   { url: "/api/partners/paginate", method: "POST" },
   { url: "/api/service-work/paginate", method: "POST" },
   { url: "/api/users/login", method: "POST" },
-  { url: "/api/services/:id", method: "GET" },
+  { url: "/api/static-sections/:id", method: "GET" },
   { url: "/api/partners/:id", method: "GET" },
   { url: "/api/service-services/:id", method: "GET" },
   { url: "/api/service-work/:id", method: "GET" },
