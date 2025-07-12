@@ -66,7 +66,6 @@ exports.checkout = async (req, res, next) => {
   let transaction;
   try {
     const { donations = [], gifts = [] } = req.body;
-    console.log({ user: req.body.user });
     const gift_category = await conn.donation_categories.findOne({
       where: {
         name_en: "Gifts",
@@ -81,7 +80,6 @@ exports.checkout = async (req, res, next) => {
     }
 
     transaction = await sequelize.transaction();
-    console.log({ checkout_body: req.body });
 
     // Create payment record
     if (req.body.status == "paid") {
@@ -92,10 +90,7 @@ exports.checkout = async (req, res, next) => {
       req.body.payment_status = "pending";
     }
 
-    console.log({ payment: req.body });
-
     const payment = await conn.payments.create(req.body, { transaction });
-    console.log({ donations });
 
     // Process donations
     if (donations.length) {
