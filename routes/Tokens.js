@@ -83,6 +83,9 @@ router.get("/me", async (req, res) => {
         email: result.email,
         name: result.name,
         phone: result.phone,
+        roles: result.user_roles
+          ? user_roles.map((role) => role.role.code)
+          : null,
         // Add other non-sensitive fields as needed
       },
     });
