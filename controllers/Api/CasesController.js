@@ -10,6 +10,7 @@ exports.search = async (req, res, next) => {
   await conn.cases
     .findAll({
       limit: req.body.limit,
+      order: [["id", "DESC"]], // Default sorting by id DESC
       offset: offset,
 
       where: {
@@ -62,6 +63,7 @@ exports.byType = async (req, res, next) => {
       where,
       limit: parseInt(limit),
       offset: parseInt(offset),
+      order: [["id", "DESC"]], // Default sorting by id DESC
     });
 
     // Fetch total count with the same filters
