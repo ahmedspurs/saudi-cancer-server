@@ -355,7 +355,7 @@ exports.adminLogin = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 7 أيام
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 أيام
     });
 
     // ✅ إرسال الـ Access Token للواجهة الأمامية
