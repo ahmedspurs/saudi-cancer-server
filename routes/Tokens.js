@@ -9,6 +9,7 @@ router.post("/refresh-token", (req, res) => {
   console.log("refresh request");
 
   const refreshToken = req.cookies.refreshToken;
+  console.log({ refreshToken });
 
   if (!refreshToken) {
     return res.status(401).json({
