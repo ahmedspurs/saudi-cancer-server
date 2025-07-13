@@ -56,6 +56,13 @@ router.get("/me", async (req, res) => {
       where: {
         id: userId,
       },
+      include: [
+        {
+          model: user.user_roles,
+          as: "user_roles",
+          include: ["role"],
+        },
+      ],
     }); // Exclude sensitive fields
 
     console.log({ id: result.id });
