@@ -169,7 +169,7 @@ exports.getDonationsTimeline = async (req, res) => {
       include: [
         {
           model: conn.payments,
-          as: "payments",
+          as: "payment",
           attributes: [],
           where: paymentWhere,
           required: status ? true : false,
