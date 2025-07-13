@@ -319,7 +319,7 @@ exports.adminLogin = async (req, res) => {
   try {
     const existingUser = await conn.users.findOne({ where: { email } });
     if (!existingUser) {
-      return res.status(401).json({
+      return res.status(200).json({
         status: false,
         msg: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
       });
@@ -330,7 +330,7 @@ exports.adminLogin = async (req, res) => {
       existingUser.password_hash
     );
     if (!matchedPass) {
-      return res.status(401).json({
+      return res.status(200).json({
         status: false,
         msg: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
       });
