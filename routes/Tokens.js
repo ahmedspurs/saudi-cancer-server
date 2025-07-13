@@ -58,7 +58,7 @@ router.get("/me", async (req, res) => {
       },
       include: [
         {
-          model: user.user_roles,
+          model: conn.user_roles,
           as: "user_roles",
           include: ["role"],
         },
