@@ -118,7 +118,153 @@ exports.register = async (req, res, next) => {
     res.status(500).json({ status: false, msg: "حدث خطأ ما" });
   }
 };
+exports.editUserAdmin = async (req, res, next) => {
+  let transaction;
+  try {
+    console.log("Request body:", req.body);
+    transaction = await sequelize.transaction();
 
+    // Get user ID from request parameters
+    const userId = req.params.id;
+
+    // Check if user exists
+    const existingUser = await conn.users.findOne({
+      where: { id: userId },
+      transaction,
+    });
+
+    if (!existingUser) {
+      await transaction.rollback();
+      return res.status(404).json({
+        status: false,
+        msg: "User not found",
+      });
+    }
+
+    // Prepare update data
+    const updateData = {};
+
+    // Update name if provided
+    if (req?.body?.name) {
+      updateData.name = req.body.name;
+    }
+
+    // Update email if provided and validate
+    if (req?.body?.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(req.body.email)) {
+        await transaction.rollback();
+        return res.status(400).json({
+          status: false,
+          msg: "Invalid email format",
+        });
+      }
+
+      // Check if new email is already in use by another user
+      const emailExists = await conn.users.findOne({
+        where: {
+          email: req.body.email,
+          id: { [Op.ne]: userId }, // Exclude current user
+        },
+        transaction,
+      });
+
+      if (emailExists) {
+        await transaction.rollback();
+        return res.status(400).json({
+          status: false,
+          msg: "Email already exists",
+        });
+      }
+      updateData.email = req.body.email;
+    }
+
+    // Update password if provided
+    if (req?.body?.password) {
+      if (req.body.password.length < 6) {
+        await transaction.rollback();
+        return res.status(400).json({
+          status: false,
+          msg: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        });
+      }
+      const salt = await bcrypt.genSalt(10);
+      updateData.password_hash = await bcrypt.hash(req.body.password, salt);
+    }
+
+    // Update phone if provided
+    if (req?.body?.phone) {
+      if (req.body.phone.length < 9) {
+        await transaction.rollback();
+        return res.status(400).json({
+          status: false,
+          msg: "رقم الهاتف يجب أن يكون 9 أرقام على الأقل",
+        });
+      }
+      updateData.phone = req.body.phone;
+    }
+
+    // Update role if provided
+    if (req?.body?.role_id) {
+      const validRole = await conn.roles.findOne({
+        where: { id: req.body.role_id },
+        transaction,
+      });
+
+      if (!validRole) {
+        await transaction.rollback();
+        return res.status(400).json({
+          status: false,
+          msg: "Invalid role ID",
+        });
+      }
+    }
+
+    // Update user
+    await conn.users.update(updateData, {
+      where: { id: userId },
+      transaction,
+    });
+
+    // Update user_roles if role_id is provided
+    if (req?.body?.role_id) {
+      // Delete existing roles
+      await conn.user_roles.destroy({
+        where: { user_id: userId },
+        transaction,
+      });
+
+      // Create new role entry
+      await conn.user_roles.create(
+        {
+          user_id: userId,
+          role_id: req.body.role_id,
+        },
+        { transaction }
+      );
+    }
+
+    // Fetch updated user
+    const updatedUser = await conn.users.findOne({
+      where: { id: userId },
+      attributes: ["id", "name", "email", "phone"],
+      transaction,
+    });
+
+    await transaction.commit();
+    res.status(200).json({
+      status: true,
+      data: {
+        user: updatedUser,
+      },
+      msg: "User updated successfully",
+    });
+  } catch (error) {
+    console.error("Error in updateUser:", error);
+    if (transaction) await transaction.rollback();
+    res.status(500).json({ status: false, msg: "حدث خطأ ما" });
+  }
+};
 exports.donorRegister = async (req, res, next) => {
   let transaction;
   try {

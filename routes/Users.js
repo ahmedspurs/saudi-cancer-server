@@ -18,10 +18,12 @@ const {
   donorRegister,
   updateUserProfile,
   adminLogin,
+  editUserAdmin,
 } = require("../controllers/Api/UsersController.js");
 router.route("/").get(getUsers).post(register);
 
 router.route("/donor-register").post(donorRegister);
+router.route("/edit-user-admin/:id").post(editUserAdmin);
 router.route("/login").post(login);
 router.route("/admin-login").post(adminLogin);
 router.route("/edit-pass").post(updatePass);
