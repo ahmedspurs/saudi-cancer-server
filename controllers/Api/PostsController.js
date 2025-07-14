@@ -320,13 +320,15 @@ exports.updatePosts = async (req, res, next) => {
 
     // Handle gallery images if type.code is gallery
     let galleryImages = [];
+    console.log({ image_ids });
+
     if (type.code === "gallery") {
       // Delete old images not included in image_ids
       if (image_ids) {
         await conn.post_images.destroy({
           where: {
             post_id: postId,
-            id: { [conn.Sequelize.Op.notIn]: image_ids },
+            id: { [Op.notIn]: image_ids },
           },
         });
       } else {
