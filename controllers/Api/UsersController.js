@@ -353,9 +353,9 @@ exports.adminLogin = async (req, res) => {
     // ✅ إرسال الـ Refresh Token في Cookie آمنة
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 أيام
+      secure: process.env.NODE_ENV === "production", // Ensure HTTPS in production
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Adjust for cross-site if needed
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // ✅ إرسال الـ Access Token للواجهة الأمامية
