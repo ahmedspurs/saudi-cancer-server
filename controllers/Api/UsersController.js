@@ -357,6 +357,7 @@ exports.adminLogin = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Adjust for cross-site if needed
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
+    console.log(res.getHeaders()); // Log headers to check for Set-Cookie
 
     // ✅ إرسال الـ Access Token للواجهة الأمامية
     res.status(200).json({
