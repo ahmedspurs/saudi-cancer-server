@@ -246,9 +246,8 @@ exports.getPostsById = async (req, res, next) => {
 
 exports.updatePosts = async (req, res, next) => {
   try {
-    const postId = req.params.id;
     const {
-      type,
+      type_id,
       title_ar,
       title_en,
       content_ar,
@@ -257,57 +256,61 @@ exports.updatePosts = async (req, res, next) => {
       is_featured,
       is_active,
       sort_orders,
+      image_url,
       image_ids,
     } = req.body;
 
-    console.log({ body_images: req.body.images });
+    const postId = req.params.id;
 
     // Validation
-    if (!type || !["news", "gallery"].includes(type)) {
+    const type = await conn.post_types.findOne({
+      where: { id: type_id },
+    });
+    if (!type) {
       return res
         .status(400)
-        .json({ status: false, msg: "نوع المنشور غير صالح" });
+        .json({ status: false, msg: "نوع المنشور غير موجود" });
     }
     if (!title_ar || !title_en) {
       return res
         .status(400)
         .json({ status: false, msg: "العنوان بالعربية والإنجليزية مطلوب" });
     }
-    if (type === "gallery" && !req.body.images && !image_ids) {
-      return res.status(400).json({
-        status: false,
-        msg: "يجب تحميل صورة واحدة على الأقل للمعرض أو الاحتفاظ بالصور الحالية",
-      });
+    if (type.code === "gallery" && !req.body.images && !image_ids) {
+      return res
+        .status(400)
+        .json({ status: false, msg: "يجب تحميل صورة واحدة على الأقل للمعرض" });
     }
 
-    // Check if post exists
-    const post = await conn.posts.findOne({ where: { id: postId } });
-    if (!post) {
+    // Find existing post
+    const existingPost = await conn.posts.findOne({
+      where: { id: postId },
+    });
+    if (!existingPost) {
       return res.status(404).json({ status: false, msg: "المنشور غير موجود" });
     }
 
-    // Check slug uniqueness (if changed)
-    if (slug && slug !== post.slug) {
-      const existingPost = await conn.posts.findOne({
-        where: { slug, id: { [Op.ne]: postId } },
+    // Check slug uniqueness (exclude current post)
+    const generatedSlug = slug || existingPost.slug;
+    const slugCheck = await conn.posts.findOne({
+      where: { slug: generatedSlug, id: { [conn.Sequelize.Op.ne]: postId } },
+    });
+    if (slugCheck) {
+      return res.status(400).json({
+        status: false,
+        msg: "المعرف (slug) موجود بالفعل، اختر معرفًا آخر",
       });
-      if (existingPost) {
-        return res.status(400).json({
-          status: false,
-          msg: "المعرف (slug) موجود بالفعل، اختر معرفًا آخر",
-        });
-      }
     }
 
     // Prepare post data
     const postData = {
-      type,
-      slug: slug || post.slug,
+      type_id,
+      slug: generatedSlug,
       title_ar,
       title_en,
       content_ar: content_ar || null,
       content_en: content_en || null,
-      image_url: req.body.image_url || post.image_url,
+      image_url: image_url || existingPost.image_url,
       is_featured: is_featured === "1" || is_featured === true,
       is_active: is_active === "1" || is_active === true,
     };
@@ -315,14 +318,15 @@ exports.updatePosts = async (req, res, next) => {
     // Update post
     await conn.posts.update(postData, { where: { id: postId } });
 
-    // Handle gallery images if type is gallery
-    if (type === "gallery") {
-      // Delete removed images (not included in image_ids)
+    // Handle gallery images if type.code is gallery
+    let galleryImages = [];
+    if (type.code === "gallery") {
+      // Delete old images not included in image_ids
       if (image_ids) {
         await conn.post_images.destroy({
           where: {
             post_id: postId,
-            id: { [Op.notIn]: image_ids },
+            id: { [conn.Sequelize.Op.notIn]: image_ids },
           },
         });
       } else {
@@ -330,8 +334,7 @@ exports.updatePosts = async (req, res, next) => {
       }
 
       // Add new images
-      let images = req?.body?.images || [];
-      let galleryImages = [];
+      let images = req.body.images || [];
       if (images.length) {
         galleryImages = images.map((file, index) => ({
           post_id: postId,
@@ -343,24 +346,25 @@ exports.updatePosts = async (req, res, next) => {
         }));
         await conn.post_images.bulkCreate(galleryImages);
       }
-    } else {
-      // If type is not gallery, remove all gallery images
-      await conn.post_images.destroy({ where: { post_id: postId } });
     }
 
     // Fetch updated post
-    const updatedPost = await conn.posts.findOne({
-      where: { id: postId },
-      include: [{ model: conn.post_images, as: "post_images" }],
-    });
+    const updatedPost = await conn.posts.findOne({ where: { id: postId } });
+    const updatedGalleryImages =
+      type.code === "gallery"
+        ? await conn.post_images.findAll({ where: { post_id: postId } })
+        : [];
+
+    // Prepare response data
+    const responseData = {
+      post: updatedPost,
+      galleryImages: updatedGalleryImages,
+    };
 
     res.status(200).json({
       status: true,
-      data: {
-        post: updatedPost,
-        galleryImages: type === "gallery" ? updatedPost.post_images : [],
-      },
-      msg: "تم تعديل المنشور بنجاح",
+      data: responseData,
+      msg: "تم تحديث المنشور بنجاح",
     });
   } catch (e) {
     console.error(e);
