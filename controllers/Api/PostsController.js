@@ -293,7 +293,7 @@ exports.updatePosts = async (req, res, next) => {
     // Check slug uniqueness (exclude current post)
     const generatedSlug = slug || existingPost.slug;
     const slugCheck = await conn.posts.findOne({
-      where: { slug: generatedSlug, id: { [conn.Sequelize.Op.ne]: postId } },
+      where: { slug: generatedSlug, id: { [Op.ne]: postId } },
     });
     if (slugCheck) {
       return res.status(400).json({
