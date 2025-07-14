@@ -15,14 +15,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    parent_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true,
-      references: {
-        model: 'donation_categories',
-        key: 'id'
-      }
-    },
     is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
@@ -39,13 +31,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "parent_id",
-        using: "BTREE",
-        fields: [
-          { name: "parent_id" },
         ]
       },
     ]

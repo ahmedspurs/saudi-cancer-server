@@ -62,8 +62,6 @@ function initModels(sequelize) {
   cases.hasMany(donations_common, { as: "donations_commons", foreignKey: "case_id"});
   cases.belongsTo(donation_categories, { as: "category", foreignKey: "category_id"});
   donation_categories.hasMany(cases, { as: "cases", foreignKey: "category_id"});
-  donation_categories.belongsTo(donation_categories, { as: "parent", foreignKey: "parent_id"});
-  donation_categories.hasMany(donation_categories, { as: "donation_categories", foreignKey: "parent_id"});
   donations_common.belongsTo(donation_categories, { as: "category", foreignKey: "category_id"});
   donation_categories.hasMany(donations_common, { as: "donations_commons", foreignKey: "category_id"});
   pain_relief_programs.belongsTo(donation_categories, { as: "category", foreignKey: "category_id"});
