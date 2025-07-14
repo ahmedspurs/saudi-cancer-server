@@ -8,7 +8,7 @@ const file_handler = async (req, res, next) => {
     if (!req.files || Object.keys(req.files).length === 0) {
       return next(); // Skip middleware if no files are present
     }
-    const fileName = ["image", "file", "image_url", "images"];
+    const fileName = ["image", "file", "image_url", "images", "file_url0"];
     const urlPart = req.originalUrl.split("/api/")[1];
     if (!urlPart) {
       return res.status(400).json({ status: false, msg: "Invalid API path" });
