@@ -320,7 +320,7 @@ exports.updatePosts = async (req, res, next) => {
 
     // Handle gallery images if type.code is gallery
     let galleryImages = [];
-    console.log({ image_ids });
+    console.log({ image_ids: image_ids.split(",") });
 
     if (type.code === "gallery") {
       // Delete old images not included in image_ids
@@ -328,7 +328,7 @@ exports.updatePosts = async (req, res, next) => {
         await conn.post_images.destroy({
           where: {
             post_id: postId,
-            id: { [Op.notIn]: image_ids },
+            id: { [Op.notIn]: image_ids.split(",") },
           },
         });
       } else {
