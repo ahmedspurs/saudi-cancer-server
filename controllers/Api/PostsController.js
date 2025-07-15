@@ -175,6 +175,7 @@ exports.createPosts = async (req, res, next) => {
       slug: generatedSlug,
       title_ar,
       title_en,
+      video_url,
       content_ar: content_ar || null,
       content_en: content_en || null,
       image_url,
@@ -310,6 +311,7 @@ exports.updatePosts = async (req, res, next) => {
       is_active,
       sort_orders,
       image_url,
+      video_url,
       image_ids,
     } = req.body;
 
@@ -364,6 +366,7 @@ exports.updatePosts = async (req, res, next) => {
       content_ar: content_ar || null,
       content_en: content_en || null,
       image_url: image_url || existingPost.image_url,
+      video_url: video_url || existingPost.video_url,
       is_featured: is_featured === "1" || is_featured === true,
       is_active: is_active === "1" || is_active === true,
     };
