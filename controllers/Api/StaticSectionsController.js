@@ -33,7 +33,7 @@ exports.byType = async (req, res, next) => {
   await conn.static_sections
     .findOne({
       where: {
-        [Op.or]: [
+        [Op.and]: [
           {
             [searchCol]: {
               [Op.like]: "%" + search + "%",
