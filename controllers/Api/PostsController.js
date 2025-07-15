@@ -59,6 +59,8 @@ exports.searchByType = async (req, res, next) => {
       },
     });
 
+    console.log(req.body, post_type.id);
+
     const type_id = post_type.id;
     // Build the where clause
     const where = {
