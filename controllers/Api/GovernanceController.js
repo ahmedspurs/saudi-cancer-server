@@ -89,6 +89,7 @@ exports.searchByType = async (req, res, next) => {
     res.status(200).json({
       status: true,
       data: assets,
+      category,
       total: totalCount,
       page: pageNum,
       limit: limitNum,
