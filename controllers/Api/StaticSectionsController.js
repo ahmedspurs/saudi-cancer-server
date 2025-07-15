@@ -31,7 +31,7 @@ exports.byType = async (req, res, next) => {
   var offset = (req.body.page - 1) * req.body.limit;
   var search = req.body.search;
   await conn.static_sections
-    .findAll({
+    .findOne({
       limit: req.body.limit,
       offset: offset,
 
