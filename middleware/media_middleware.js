@@ -27,7 +27,35 @@ const file_handler = async (req, res, next) => {
       .replace(/\\/g, "/");
     await fs.mkdir(directoryPath, { recursive: true });
 
-    const allowedExtensions = [".jpg", ".jpeg", ".png", ".pdf"];
+    const allowedExtensions = [
+      // Images
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".bmp",
+      ".tiff",
+      ".tif",
+      ".webp",
+      ".svg",
+      ".ico",
+
+      // PDFs
+      ".pdf",
+
+      // Videos
+      ".mp4",
+      ".mov",
+      ".avi",
+      ".wmv",
+      ".flv",
+      ".mkv",
+      ".webm",
+      ".mpeg",
+      ".mpg",
+      ".3gp",
+      ".m4v",
+    ];
 
     if (req.files) {
       fileName.forEach((name) => {
