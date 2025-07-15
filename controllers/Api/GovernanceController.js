@@ -1,5 +1,5 @@
 const { conn, sequelize } = require("../../db/conn");
-const { Sequelize, Op, Model, DataTypes } = require("sequelize");
+const { Sequelize, Op, Model, DataTypes, where } = require("sequelize");
 const fs = require("fs");
 const { sendEmail } = require("../../utils/mail");
 const path = require("path");
@@ -25,6 +25,83 @@ exports.search = async (req, res, next) => {
     .catch(function (error) {
       console.log(error);
     });
+};
+
+exports.searchByType = async (req, res, next) => {
+  try {
+    // Validate and sanitize input
+    const {
+      col: searchCol,
+      page = 1,
+      limit = 10,
+      search = "",
+      category_id,
+    } = req.body;
+
+    // Validate required fields
+    if (!searchCol || !category_id) {
+      return res.status(400).json({
+        status: false,
+        message: "Missing required fields: col and category_id are required",
+      });
+    }
+
+    // Sanitize page and limit to ensure they are positive integers
+    const pageNum = Math.max(1, parseInt(page, 10));
+    const limitNum = Math.max(1, Math.min(parseInt(limit, 10), 100)); // Cap limit at 100
+    const offset = (pageNum - 1) * limitNum;
+
+    // Check if category exists
+    const category = await conn.governance_categories.findOne({
+      where: { id: category_id },
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        status: false,
+        message: "Category not found",
+      });
+    }
+
+    // Perform search and count in parallel
+    const [assets, totalCount] = await Promise.all([
+      conn.governance.findAll({
+        where: {
+          [Op.and]: [
+            { [searchCol]: { [Op.like]: `%${search}%` } },
+            { category_id },
+          ],
+        },
+        limit: limitNum,
+        offset,
+      }),
+      conn.governance.count({
+        where: {
+          [Op.and]: [
+            { [searchCol]: { [Op.like]: `%${search}%` } },
+            { category_id },
+          ],
+        },
+      }),
+    ]);
+
+    // Return response
+    res.status(200).json({
+      status: true,
+      data: assets,
+      total: totalCount,
+      page: pageNum,
+      limit: limitNum,
+      totalPages: Math.ceil(totalCount / limitNum),
+    });
+  } catch (error) {
+    console.error("Error in searchByType:", error);
+    res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+    next(error); // Pass error to Express error middleware
+  }
 };
 
 //@decs   Get All
