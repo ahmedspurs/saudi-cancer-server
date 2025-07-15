@@ -26,6 +26,40 @@ exports.search = async (req, res, next) => {
       console.log(error);
     });
 };
+exports.byType = async (req, res, next) => {
+  var searchCol = req.body.col;
+  var offset = (req.body.page - 1) * req.body.limit;
+  var search = req.body.search;
+  await conn.static_sections
+    .findAll({
+      limit: req.body.limit,
+      offset: offset,
+
+      where: {
+        [Op.or]: [
+          {
+            [searchCol]: {
+              [Op.like]: "%" + search + "%",
+            },
+          },
+          {
+            slug: req.body.slug,
+          },
+        ],
+      },
+    })
+    .then(async function (assets) {
+      var count = conn.static_sections.findAll();
+      res.status(200).json({ status: true, data: assets, tot: count.length });
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).json({
+        status: false,
+        msg: `حدث خطأ ما في السيرفر`,
+      });
+    });
+};
 
 //@decs   Get All
 //@route  GET
