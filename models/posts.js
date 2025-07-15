@@ -40,6 +40,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    video_url: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     is_featured: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
