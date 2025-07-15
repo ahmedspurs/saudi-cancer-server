@@ -11,7 +11,7 @@ exports.search = async (req, res, next) => {
     .findAll({
       limit: req.body.limit,
       offset: offset,
-
+      include: ["type"],
       where: {
         [searchCol]: {
           [Op.like]: "%" + search + "%",
@@ -32,7 +32,9 @@ exports.search = async (req, res, next) => {
 //@access Public
 exports.getOrganizationMembers = async (req, res, next) => {
   try {
-    const result = await conn.organization_members.findAll();
+    const result = await conn.organization_members.findAll({
+      include: ["type"],
+    });
     res.status(200).json({ status: true, data: result });
     // res.status(500).json({
     //   status: false,
@@ -67,6 +69,7 @@ exports.paginate = async (req, res, next) => {
     const result = await conn.organization_members.findAll({
       order: [["id", "DESC"]],
       offset: offset,
+      include: ["type"],
 
       limit: req.body.limit,
       subQuery: true,
@@ -88,6 +91,7 @@ exports.getOrganizationMembersById = async (req, res, next) => {
   try {
     const result = await conn.organization_members.findOne({
       where: { id: req.params.id },
+      include: ["type"],
     });
     res.status(200).json({ status: true, data: result });
   } catch (e) {
