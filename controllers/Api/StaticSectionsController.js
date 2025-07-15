@@ -32,9 +32,6 @@ exports.byType = async (req, res, next) => {
   var search = req.body.search;
   await conn.static_sections
     .findOne({
-      limit: req.body.limit,
-      offset: offset,
-
       where: {
         [Op.or]: [
           {

@@ -48,6 +48,57 @@ exports.search = async (req, res, next) => {
   }
 };
 
+exports.searchByType = async (req, res, next) => {
+  console.log({ limit: req.body.limit });
+  try {
+    const { col: searchCol, page, limit, search, type } = req.body;
+    const offset = (page - 1) * limit;
+    const post_type = await conn.post_types.findOne({
+      where: {
+        code: req.body.type,
+      },
+    });
+
+    const type_id = post_type.id;
+    // Build the where clause
+    const where = {
+      [searchCol]: {
+        [Op.like]: `%${search}%`,
+      },
+    };
+
+    // Add type filter if provided
+    if (type_id) {
+      where.type_id = type_id; // Exact match for 'news' or 'gallery'
+    }
+
+    // Fetch paginated results
+    const assets = await conn.posts.findAll({
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      include: ["type"],
+      where,
+    });
+
+    // Get total count for pagination
+    const count = await conn.posts.count({ where });
+
+    // Send response
+    res.status(200).json({
+      status: true,
+      data: assets,
+      tot: count,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: false,
+      message: "Failed to search posts",
+      error: error.message,
+    });
+  }
+};
+
 //@decs   Get All
 //@route  GET
 //@access Public
