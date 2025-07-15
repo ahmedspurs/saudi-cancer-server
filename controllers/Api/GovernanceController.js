@@ -72,6 +72,7 @@ exports.searchByType = async (req, res, next) => {
             { category_id },
           ],
         },
+        include: ["category"],
         limit: limitNum,
         offset,
       }),
@@ -110,7 +111,9 @@ exports.searchByType = async (req, res, next) => {
 //@access Public
 exports.getGovernance = async (req, res, next) => {
   try {
-    const result = await conn.governance.findAll();
+    const result = await conn.governance.findAll({
+      include: ["category"],
+    });
     res.status(200).json({ status: true, data: result });
     // res.status(500).json({
     //   status: false,
@@ -145,6 +148,7 @@ exports.paginate = async (req, res, next) => {
     const result = await conn.governance.findAll({
       order: [["id", "DESC"]],
       offset: offset,
+      include: ["category"],
 
       limit: req.body.limit,
       subQuery: true,
@@ -166,6 +170,7 @@ exports.getGovernanceById = async (req, res, next) => {
   try {
     const result = await conn.governance.findOne({
       where: { id: req.params.id },
+      include: ["category"],
     });
     res.status(200).json({ status: true, data: result });
   } catch (e) {
