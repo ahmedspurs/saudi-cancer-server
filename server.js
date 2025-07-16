@@ -40,6 +40,7 @@ const reports = require("./routes/Reports");
 const tokens = require("./routes/Tokens");
 const bank_accounts = require("./routes/BankAccounts.js");
 const member_types = require("./routes/MemberTypes.js");
+const partners = require("./routes/Partners.js");
 
 const port = process.env.PORT || 3030;
 const app = express();
@@ -132,6 +133,7 @@ app.use("/api/post-types", post_types);
 app.use("/api/posts", posts);
 app.use("/api/post-images", post_images);
 app.use("/api/tokens", tokens);
+app.use("/api/partners", partners);
 app.use("/api/member-types", member_types);
 
 app.listen(port, () => {
