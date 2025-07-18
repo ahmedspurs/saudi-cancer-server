@@ -13,8 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     code: {
       type: DataTypes.STRING(50),
-      allowNull: true,
-      unique: "code"
+      allowNull: true
     },
     is_active: {
       type: DataTypes.BOOLEAN,
@@ -32,14 +31,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "code",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "code" },
         ]
       },
     ]

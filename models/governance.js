@@ -17,15 +17,15 @@ module.exports = function(sequelize, DataTypes) {
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     description_en: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     image: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     file: {
       type: DataTypes.STRING(255),
@@ -33,7 +33,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     category_id: {
       type: DataTypes.INTEGER,

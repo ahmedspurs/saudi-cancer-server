@@ -12,6 +12,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: "slug_unique"
     },
+    link: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     title_ar: {
       type: DataTypes.STRING(255),
       allowNull: false
