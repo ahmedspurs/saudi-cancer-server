@@ -190,7 +190,7 @@ exports.createPosts = async (req, res, next) => {
     // // Handle gallery images if type.code is gallery
     let images = req?.body?.images || [];
     let galleryImages = [];
-    if (type.code === "gallery" && req.body.images) {
+    if (req.body.images) {
       galleryImages = images.map((file, index) => ({
         post_id: post.id,
         image_url: file,
@@ -206,7 +206,7 @@ exports.createPosts = async (req, res, next) => {
     // Prepare response data
     const responseData = {
       post,
-      galleryImages: type.code === "gallery" ? galleryImages : [],
+      galleryImages: galleryImages ? galleryImages : [],
     };
 
     res.status(200).json({
@@ -378,7 +378,7 @@ exports.updatePosts = async (req, res, next) => {
     // Handle gallery images if type.code is gallery
     let galleryImages = [];
 
-    if (type.code === "gallery") {
+    if (image_ids) {
       // Delete old images not included in image_ids
       if (image_ids) {
         await conn.post_images.destroy({
@@ -408,10 +408,9 @@ exports.updatePosts = async (req, res, next) => {
 
     // Fetch updated post
     const updatedPost = await conn.posts.findOne({ where: { id: postId } });
-    const updatedGalleryImages =
-      type.code === "gallery"
-        ? await conn.post_images.findAll({ where: { post_id: postId } })
-        : [];
+    const updatedGalleryImages = image_ids
+      ? await conn.post_images.findAll({ where: { post_id: postId } })
+      : [];
 
     // Prepare response data
     const responseData = {
