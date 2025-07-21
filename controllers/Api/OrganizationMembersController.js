@@ -1,5 +1,5 @@
 const { conn, sequelize } = require("../../db/conn");
-const { Sequelize, Op, Model, DataTypes } = require("sequelize");
+const { Sequelize, Op, Model, DataTypes, where } = require("sequelize");
 const fs = require("fs");
 const { sendEmail } = require("../../utils/mail");
 const path = require("path");
@@ -34,6 +34,33 @@ exports.getOrganizationMembers = async (req, res, next) => {
   try {
     const result = await conn.organization_members.findAll({
       include: ["type"],
+    });
+    res.status(200).json({ status: true, data: result });
+    // res.status(500).json({
+    //   status: false,
+    //   msg: `حدث خطأ ما في السيرفر`,
+    // });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      status: false,
+      msg: `حدث خطأ ما في السيرفر`,
+    });
+  }
+};
+
+exports.getOrganizationMembersByType = async (req, res, next) => {
+  try {
+    const result = await conn.organization_members.findAll({
+      include: [
+        {
+          model: conn.member_types,
+          as: "type",
+          where: {
+            code: req.body.type,
+          },
+        },
+      ],
     });
     res.status(200).json({ status: true, data: result });
     // res.status(500).json({

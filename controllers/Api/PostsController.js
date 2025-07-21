@@ -378,7 +378,7 @@ exports.updatePosts = async (req, res, next) => {
     // Handle gallery images if type.code is gallery
     let galleryImages = [];
 
-    if (image_ids) {
+    if (req.body.images) {
       // Delete old images not included in image_ids
       if (image_ids) {
         await conn.post_images.destroy({
