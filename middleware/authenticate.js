@@ -17,6 +17,7 @@ const publicRoutes = [
   { url: "/api/comprehensive-documents/paginate", method: "POST" },
   { url: "/api/organization-members/by-type", method: "POST" },
   { url: "/api/organization-members/by-type", method: "GET" },
+  { url: "/api/governance/by-type", method: "GET" },
   { url: "/api/partners", method: "GET" },
   { url: "/api/payments/user/reciept", method: "POST" },
   { url: "/api/users/login", method: "POST" },
