@@ -69,6 +69,8 @@ app.use(
       "http://www.scf.org.sa",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 // app.use(
