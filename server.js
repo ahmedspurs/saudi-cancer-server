@@ -54,6 +54,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
+      "http://localhost:3000/",
       "http://localhost:3001",
       "https://store.ratlclinic.com",
       "https://store.scf.org.sa",
