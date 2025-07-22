@@ -50,29 +50,38 @@ const { authenticate } = require("./middleware/authenticate.js");
 
 // const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://store.ratlclinic.com",
+  "https://store.scf.org.sa",
+  "http://store.scf.org.sa",
+  "https://dashboard.scf.org.sa",
+  "http://dashboard.scf.org.sa",
+  "https://api.scf.org.sa",
+  "http://api.scf.org.sa",
+  "https://scf.org.sa",
+  "http://scf.org.sa",
+  "https://www.scf.org.sa",
+  "http://www.scf.org.sa",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3000/",
-      "http://localhost:3001",
-      "https://store.ratlclinic.com",
-      "https://store.scf.org.sa",
-      "http://store.scf.org.sa",
-      "https://dashboard.scf.org.sa",
-      "http://dashboard.scf.org.sa",
-      "https://api.scf.org.sa",
-      "http://api.scf.org.sa",
-      "https://scf.org.sa",
-      "http://scf.org.sa",
-      "https://www.scf.org.sa",
-      "http://www.scf.org.sa",
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin); // فقط قيمة واحدة
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// ضروري لقبول preflight
 app.options("*", cors());
 
 // app.use(
