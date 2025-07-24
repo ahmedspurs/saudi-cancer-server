@@ -122,6 +122,34 @@ exports.checkout = async (req, res, next) => {
           },
           { transaction }
         );
+        if (req.body.status == "paid") {
+          const current_case = await conn.cases.findOne(
+            {
+              where: { id: donation.id },
+            },
+            { transaction }
+          );
+
+          if (!current_case) {
+            throw new Error("Case not found");
+          }
+
+          const { progress, target_amount } = current_case;
+
+          const additional_percentage = (donation.amount / target_amount) * 100;
+
+          const updated_case = await conn.cases.update(
+            {
+              progress: progress + additional_percentage,
+            },
+            {
+              where: {
+                id: donation.id,
+              },
+            },
+            { transaction }
+          );
+        }
       }
     }
 
@@ -294,6 +322,32 @@ exports.paymentWebhook = async (req, res, next) => {
               }
             );
           } else if (gift.case) {
+            const current_case = await conn.cases.findOne(
+              {
+                where: { id: gift.case.id },
+              },
+              { transaction }
+            );
+
+            if (!current_case) {
+              throw new Error("Case not found");
+            }
+
+            const { progress, target_amount } = current_case;
+
+            const additional_percentage = (gift.amount / target_amount) * 100;
+
+            const updated_case = await conn.cases.update(
+              {
+                progress: progress + additional_percentage,
+              },
+              {
+                where: {
+                  id: gift.case.id,
+                },
+              },
+              { transaction }
+            );
             console.log("case donation", gift.case);
           }
         });
