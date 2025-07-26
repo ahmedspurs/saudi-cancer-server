@@ -14,6 +14,7 @@ const publicRoutes = [
   { url: "/api/social-media-links", method: "GET" },
   { url: "/api/governance-categories", method: "GET" },
   { url: "/api/cases/:id", method: "GET" },
+  { url: "/api/cases/old/:id", method: "GET" },
   { url: "/api/posts/:id", method: "GET" },
   { url: "/api/comprehensive-documents/paginate", method: "POST" },
   { url: "/api/organization-members/by-type", method: "POST" },
