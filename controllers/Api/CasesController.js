@@ -230,7 +230,7 @@ exports.getCasesById = async (req, res, next) => {
 exports.getOldCasesById = async (req, res, next) => {
   try {
     const result = await conn.cases.findOne({
-      where: { old_id: req.params.id },
+      where: { old_url_id: req.params.id },
     });
     res.status(200).json({ status: true, data: result });
   } catch (e) {
