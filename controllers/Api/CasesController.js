@@ -225,6 +225,25 @@ exports.getCasesById = async (req, res, next) => {
 };
 
 //@decs   Get All
+//@route  GET
+//@access Public
+exports.getOldCasesById = async (req, res, next) => {
+  try {
+    const result = await conn.cases.findOne({
+      where: { old_id: req.params.id },
+    });
+    res.status(200).json({ status: true, data: result });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).json({
+      status: false,
+      msg: `حدث خطأ ما في السيرفر`,
+    });
+  }
+};
+
+//@decs   Get All
 //@route  Put
 //@access Public
 exports.updateCases = async (req, res, next) => {

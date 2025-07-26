@@ -58,6 +58,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: 1
+    },
+    old_url_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
