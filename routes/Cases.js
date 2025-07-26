@@ -17,6 +17,6 @@ router.route("/paginate").post(paginate);
 router.route("/paginate/filtered").post(paginateDashboard);
 router.route("/search").post(search);
 router.route("/by-type").post(byType);
-router.route("/cases/:id").get(getOldCasesById);
+router.route("/old/:id").get(getOldCasesById);
 router.route("/:id").get(getCasesById).put(updateCases).delete(deleteCases);
 module.exports = router;
